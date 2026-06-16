@@ -1,0 +1,19 @@
+{
+  "name": "nepg",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0 --port 8083",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0 --port 4183"
+  },
+  "dependencies": {
+    "@vitejs/plugin-vue": "^5.0.0",
+    "axios": "^1.6.8",
+    "vite": "^5.2.0",
+    "vue": "^3.4.21",
+    "vue-router": "^4.3.0"
+  },
+  "devDependencies": {}
+}
