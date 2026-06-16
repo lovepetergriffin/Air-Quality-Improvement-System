@@ -62,7 +62,7 @@ const assignEvent = () => {
   const gmId = isRemote.value ? gmIdNoLocal.value : gmIdLocal.value;
   if (!gmId) return myElMessage('请选择网格员', 'warning');
   axios.post('aqiFeedback/updateAqiFeedbackAssign', { afId: Number(route.query.afId), gmId }).then(res => {
-    if (res.data.code === 200) { myElMessage('指派成功'); router.push('/index/feedbackList'); }
+    if (res.data.code === 200) { myElMessage('指派成功，网格员登录后将收到任务提醒'); router.push('/index/feedbackList'); }
     else myElMessage(res.data.message || res.data.msg, 'error');
   });
 };

@@ -7,6 +7,7 @@
     <el-container>
       <el-aside width="220px">
         <el-menu router background-color="#16476c" text-color="#d8edf2" active-text-color="#7ce0b8" :default-active="$route.path">
+          <el-menu-item index="/index/dashboard">首页看板</el-menu-item>
           <el-sub-menu index="feedback">
             <template #title>公众监督数据管理</template>
             <el-menu-item index="/index/feedbackList">公众监督数据列表</el-menu-item>

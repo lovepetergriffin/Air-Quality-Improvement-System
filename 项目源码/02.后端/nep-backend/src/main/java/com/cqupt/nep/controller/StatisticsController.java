@@ -16,6 +16,7 @@ import com.cqupt.nep.service.GridMemberService;
 import com.cqupt.nep.service.GridProvinceService;
 import com.cqupt.nep.service.StatisticsService;
 import com.cqupt.nep.utils.ResultVo;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -64,6 +65,11 @@ public class StatisticsController {
         data.put("statisticsTotal", statisticsService.count());
         data.put("provinceCoverage", provinceCoverageValue());
         data.put("cityCoverage", cityCoverageValue());
+        data.put("highPriorityPending", feedbackService.count(new QueryWrapper<AqiFeedback>()
+                .in("estimated_grade", 5, 6)
+                .ne("state", 2)));
+        data.put("todayNewFeedback", feedbackService.count(new QueryWrapper<AqiFeedback>()
+                .eq("af_date", LocalDate.now().toString())));
         return ResultVo.ok(data, "首页看板数据查询成功");
     }
 
