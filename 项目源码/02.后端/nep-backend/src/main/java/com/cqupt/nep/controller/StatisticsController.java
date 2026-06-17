@@ -117,9 +117,19 @@ public class StatisticsController {
         return statisticsService.provinceStats();
     }
 
+    @PostMapping("/listProvinceItemTotalStatis")
+    public ResultVo<List<ProvinceStatDto>> provinceStatsPost() {
+        return provinceStats();
+    }
+
     @GetMapping({"/aqi-distribution", "/aqiDistribution", "/listAqiDistributeTotalStatis"})
     public ResultVo<List<AqiDistributionDto>> aqiDistribution() {
         return statisticsService.aqiDistribution();
+    }
+
+    @PostMapping("/listAqiDistributeTotalStatis")
+    public ResultVo<List<AqiDistributionDto>> aqiDistributionPost() {
+        return aqiDistribution();
     }
 
     @GetMapping({"/aqi-trend", "/aqiTrend", "/listAqiTrendTotalStatis"})
@@ -127,9 +137,19 @@ public class StatisticsController {
         return statisticsService.aqiTrend(type);
     }
 
+    @PostMapping("/listAqiTrendTotalStatis")
+    public ResultVo<List<AqiTrendDto>> aqiTrendPost(@RequestBody(required = false) Map<String, Object> body) {
+        return statisticsService.aqiTrend(stringValue(body, "type") == null ? "day" : stringValue(body, "type"));
+    }
+
     @GetMapping("/getAqiCount")
     public ResultVo<Long> getAqiCount() {
         return ResultVo.ok(statisticsService.count(), "AQI检测总数查询成功");
+    }
+
+    @PostMapping("/getAqiCount")
+    public ResultVo<Long> getAqiCountPost() {
+        return getAqiCount();
     }
 
     @GetMapping("/getAqiGoodCount")
@@ -137,14 +157,29 @@ public class StatisticsController {
         return ResultVo.ok(statisticsService.count(new QueryWrapper<Statistics>().le("aqi_id", 2)), "AQI良好数量查询成功");
     }
 
+    @PostMapping("/getAqiGoodCount")
+    public ResultVo<Long> getAqiGoodCountPost() {
+        return getAqiGoodCount();
+    }
+
     @GetMapping("/getProvinceCoverage")
     public ResultVo<Double> getProvinceCoverage() {
         return ResultVo.ok(provinceCoverageValue(), "省网格覆盖率查询成功");
     }
 
+    @PostMapping("/getProvinceCoverage")
+    public ResultVo<Double> getProvinceCoveragePost() {
+        return getProvinceCoverage();
+    }
+
     @GetMapping("/getCityCoverage")
     public ResultVo<Double> getCityCoverage() {
         return ResultVo.ok(cityCoverageValue(), "城市网格覆盖率查询成功");
+    }
+
+    @PostMapping("/getCityCoverage")
+    public ResultVo<Double> getCityCoveragePost() {
+        return getCityCoverage();
     }
 
     private Double provinceCoverageValue() {
