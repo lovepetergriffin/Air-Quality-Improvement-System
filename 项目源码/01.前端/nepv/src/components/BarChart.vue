@@ -26,12 +26,12 @@ const renderChart = () => {
       top: 8,
       textStyle: { color: '#d8fbff', fontSize: 14, fontWeight: 500 }
     },
-    grid: { left: 44, right: 18, top: 54, bottom: 34 },
+    grid: { left: 44, right: 18, top: 54, bottom: 48 },
     tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
     xAxis: {
       type: 'category',
       data: props.namedata,
-      axisLabel: { color: '#9fcbe6', interval: 0, fontSize: 11 },
+      axisLabel: { color: '#9fcbe6', interval: 0, fontSize: 10, rotate: props.namedata.length > 10 ? 35 : 0 },
       axisLine: { lineStyle: { color: '#1e6b8f' } },
       axisTick: { show: false }
     },

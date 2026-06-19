@@ -187,20 +187,32 @@ const updateTime = () => {
 
 const applyProvinceStats = stats => {
   const rows = Array.isArray(stats) && stats.length ? stats : demoProvinceStats;
-  const displayRows = rows.slice(0, 8);
-  provinceNameData.value = displayRows.map(item => shortName(item.provinceName || item.cityName));
-  so2ValueData.value = displayRows.map(item => numberValue(item.avgSo2Value ?? item.so2Total));
-  coValueData.value = displayRows.map(item => numberValue(item.avgCoValue ?? item.coTotal));
-  spmValueData.value = displayRows.map(item => numberValue(item.avgSpmValue ?? item.spmTotal));
-
   const provinceMap = new Map();
   rows.forEach(item => {
     const name = item.provinceName || item.cityName;
     if (!name) return;
-    const oldValue = provinceMap.get(name) || 0;
-    provinceMap.set(name, oldValue + Number(item.statCount || item.aqiTotal || 0));
+    const statCount = Number(item.statCount || item.aqiTotal || 1) || 1;
+    const oldValue = provinceMap.get(name) || {
+      name,
+      statCount: 0,
+      so2Total: 0,
+      coTotal: 0,
+      spmTotal: 0
+    };
+    oldValue.statCount += statCount;
+    oldValue.so2Total += numberValue(item.avgSo2Value ?? item.so2Total) * statCount;
+    oldValue.coTotal += numberValue(item.avgCoValue ?? item.coTotal) * statCount;
+    oldValue.spmTotal += numberValue(item.avgSpmValue ?? item.spmTotal) * statCount;
+    provinceMap.set(name, oldValue);
   });
-  mapArrData.value = Array.from(provinceMap.entries()).map(([name, value]) => ({ name, value }));
+  const provinceRows = Array.from(provinceMap.values())
+    .sort((a, b) => b.statCount - a.statCount || a.name.localeCompare(b.name, 'zh-CN'));
+
+  provinceNameData.value = provinceRows.map(item => shortName(item.name));
+  so2ValueData.value = provinceRows.map(item => numberValue(item.so2Total / item.statCount));
+  coValueData.value = provinceRows.map(item => numberValue(item.coTotal / item.statCount));
+  spmValueData.value = provinceRows.map(item => numberValue(item.spmTotal / item.statCount));
+  mapArrData.value = provinceRows.map(item => ({ name: item.name, value: item.statCount }));
 };
 
 const applyDistribution = data => {

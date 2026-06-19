@@ -16,6 +16,7 @@ let chart = null;
 
 const renderChart = () => {
   if (!chart) return;
+  const maxValue = Math.max(5, ...props.mapArrData.map(item => Number(item.value || 0)));
   chart.setOption({
     backgroundColor: 'transparent',
     tooltip: {
@@ -24,7 +25,7 @@ const renderChart = () => {
     },
     visualMap: {
       min: 0,
-      max: 20,
+      max: maxValue,
       left: 24,
       bottom: 20,
       text: ['高', '低'],
